@@ -13,7 +13,7 @@ const todoApi = api.create({
 });
 async function asyncLocalTodo(setTodo: any) {
   const todo = await todoApi.get("/todo");
-  setTodo(todo);
+  setTodo(todo.reverse());
 }
 async function addTodo(input: string) {
   return await todoApi.post("/todo", {
@@ -48,6 +48,13 @@ async function clearDeleted() {
 async function getDeleted() {
   return await todoApi.get("/todo/removed");
 }
+async function restoreTodo(todo: Todo) {
+  return await todoApi.patch(`/todo/${todo.id}`, {
+    data: {
+      removed: false,
+    },
+  });
+}
 const todoService = {
   asyncLocalTodo,
   addTodo,
@@ -57,5 +64,6 @@ const todoService = {
   todoApi,
   getDeleted,
   clearDeleted,
+  restoreTodo,
 };
 export default todoService;

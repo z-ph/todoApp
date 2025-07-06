@@ -12,9 +12,10 @@ function App() {
   const [filteredType, setFilteredType] = useState("all");
   useEffect(() => {
     async function fetchData() {
-      const todo = await todoService.todoApi.get("/todo");
+      const todo = await todoService.todoApi.get("/todo") as Todo[];
+      todo.reverse() as Todo[];
       setTodos(todo);
-      setFilteredTodos(todo);
+      setFilteredTodos(todo.filter((todo) => !todo.removed));
     }
     fetchData();
   }, []);
@@ -34,10 +35,10 @@ function App() {
     }
   }, [todos, filteredType]);
   return (
-    <div className=" min-w-[100%] flex flex-col justify-center items-center min-h-[100vh] bg-gray-300">
-      <header>todoApp</header>
+    <div className=" min-w-[100%] flex flex-col justify-start items-center min-h-[100vh] bg-gray-300 pt-[2rem]">
+      <header className="text-[30px] font-bold">todoApp</header>
       <div className="app w-[100%] text-center">
-        <div className="input">
+        <div className="input mb-[1rem]">
           <Input
             type="text"
             placeholder="Enter to add a todo, double click to modify"
@@ -56,7 +57,7 @@ function App() {
             style={{ maxWidth: "500px", width: "100%" }}
           />
         </div>
-        <div className="filter-options">
+        <div className="filter-options mb-[1rem]">
           <div className="flex justify-center items-center gap-[10px]">
             <Radio.Group
               value={filteredType}
@@ -69,25 +70,29 @@ function App() {
               <Radio.Button value="completed">已完成</Radio.Button>
               <Radio.Button value="deleted">回收站</Radio.Button>
             </Radio.Group>
-            {filteredType === "deleted" && (
-              <Button
-                onClick={async () => {
-                  await todoService.clearDeleted();
-                  await todoService.asyncLocalTodo(setTodos);
-                  setFilteredTodos([]);
-                }}
-              >
-                清空回收站
-              </Button>
-            )}
           </div>
+          {filteredType === "deleted" && filteredTodos.length > 0 && (
+            <Button
+              onClick={async () => {
+                await todoService.clearDeleted();
+                await todoService.asyncLocalTodo(setTodos);
+                setFilteredTodos([]);
+              }}
+            >
+              清空回收站
+            </Button>
+          )}
         </div>
 
-        <div className="todo-list flex flex-col gap-[10px] ">
+        <div className="todo-list flex flex-col gap-[1rem] ">
           {filteredTodos.map((todo: Todo) => (
             <div className="todo-item  " key={todo.id}>
               <TodoItem
                 todo={todo}
+                restoreCb={async () => {
+                  await todoService.restoreTodo(todo);
+                  await todoService.asyncLocalTodo(setTodos);
+                }}
                 toggleCompleteCb={async () => {
                   await todoService.toggleComplete(todo);
                   await todoService.asyncLocalTodo(setTodos);
@@ -96,10 +101,9 @@ function App() {
                   await todoService.deleteTodo(todo);
                   await todoService.asyncLocalTodo(setTodos);
                 }}
-                modifyCb={async () => {
-                  const content = prompt("请输入新内容");
-                  if (content) {
-                    todo.content = content;
+                modifyCb={async (userInput: string) => {
+                  if (userInput) {
+                    todo.content = userInput;
                     await todoService.modifyTodo(todo);
                     await todoService.asyncLocalTodo(setTodos);
                   }

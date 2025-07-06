@@ -15,10 +15,10 @@ export default function ToggleCompletedBtn(props: finishBtnPropsType) {
     <span
       className={`inline-block w-[30px] h-[30px] rounded-full border-[1px] text-[1.2rem] border-[var(--black)] ${
         state ? finishClass : unFinishClass
-      }`}
+      } transition-all hover:scale-110`}
       onClick={onClick}
     >
-      {state ? <CheckOutlined /> : ""}
+      {state ? <CheckOutlined className="" /> : ""}
     </span>
   );
 }

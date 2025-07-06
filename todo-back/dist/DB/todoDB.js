@@ -124,7 +124,10 @@ class TodoDB {
         return this._datebase.all[id];
     }
     clearDeleted() {
-        this._datebase.all = this.getNotRemoved();
+        this._datebase.all = this.getNotRemoved().reduce((acc, cur) => {
+            acc[cur.id] = cur;
+            return acc;
+        }, {});
         this.store();
     }
 }
