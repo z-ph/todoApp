@@ -16,7 +16,8 @@ app.use((req, res, next) => {
 app.use("/api/todo", todoRouter);
 
 const PORT = 1234;
-app.listen(PORT, () => {
-  console.log("http://localhost:" + PORT);
+const IP = "10.21.22.30";
+app.listen(PORT, '0.0.0.0', () => {
+  console.log("http://" + IP + ":" + PORT);
 });
 

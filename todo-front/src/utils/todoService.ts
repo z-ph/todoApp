@@ -5,8 +5,10 @@ export interface Todo {
   removed: boolean;
 }
 import api from "./api";
+const PORT = 1234;
+const IP = "10.21.22.30";
 const todoApi = api.create({
-  baseUrl: "http://localhost:1234/api",
+  baseUrl: "http://" + IP + ":" + PORT + "/api",
   headers: {
     "Content-Type": "application/json",
   },
