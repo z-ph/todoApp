@@ -1,0 +1,34 @@
+/* import tailwindcss */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+/* @import "tailwindcss/base.css" layer(base); */
+@import "tailwindcss/utilities.css" layer(utilities);
+
+body{
+  all:unset;
+}
+:root {
+  --body-bg: #e8f6ff;
+  --border-radius: 12px;
+  --border: 2px solid #33322E;
+  --box-shadow: 4px 4px 0px #33322E;
+  --box-shadow-reverse: -4px 4px 0px #33322E;
+  --padding: 20px 24px;
+  --btn-padding: 12px 24px;
+  --btn-small-padding: 10px 20px;
+  --font: "DM Sans", "PingFang SC", "Lantinghei SC", "Microsoft YaHei", "HanHei SC", "Helvetica Neue", "Open Sans", Arial, "Hiragino Sans GB", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif, HYWenHei-GEW !important;
+  --font-color: #33322E;
+  --font-size-base: 16px;
+  --placeholder: rgba(51, 50, 46, 0.535);
+  --font-color-complete: rgba(51, 50, 46, 0.535);
+  --bg-normal: #F9F3E5;
+  --bg-submit: #ffd6e9;
+  --bg-completed: #D0F4F0;
+  --bg-discard: #FFF0EE;
+  --bg-deleted: #ddd;
+  --bg-edit: #fbeef3;
+  --normal: #f5d99e;
+  --completed: #8CD4CB;
+  --deleted: #F6A89E;
+  --black: #33322E;
+}
